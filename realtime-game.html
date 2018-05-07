@@ -55,8 +55,12 @@
 		font-size: 24px;
 		width: 30px;
 		height: 30px;
-		display: none;
+		/*display: none;*/
 		/*padding-bottom: 20px;*/
+		cursor: pointer;
+		opacity: 0;
+		-webkit-transition: opacity .3s; /* Safari */
+    	transition: opacity .3s;
 	}
 	
 	.cw{
@@ -69,13 +73,23 @@
 		right: 5px;
 	}
 	.column:hover .rotate{
-		display: initial;
+		/*display: initial;*/
+		opacity: 1;
 	}
 	
-	.btn-img{
-		height: 20px;
-		width: 20px;
+	.colDown, .colUp, .rowRight, .rowLeft{
+		font-size: 120px;
+		text-align: center;
+		cursor: pointer;
+		-webkit-transition: background-color .3s; /* Safari */
+    	transition: background-color .3s;
 	}
+	
+	.colDown:hover, .colUp:hover, .rowRight:hover, .rowLeft:hover{
+		background-color: red;
+	}
+	
+	
 	
 </style>
 </head>
@@ -96,7 +110,50 @@ $(function () {
   var context={
     "city": '<strong>London</strong>',
     "street": "Baker Street",
-    "number": "221B"
+    "number": "221B",
+    "bkL" : `	
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:tan"></div>
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:tan"></div>
+				<div class="inner" style="background-color:tan"></div>
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:dimgrey"></div>`,
+				
+	"bkT" : `	
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:tan"></div>
+				<div class="inner" style="background-color:tan"></div>
+				<div class="inner" style="background-color:tan"></div>
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:tan"></div>
+				<div class="inner" style="background-color:dimgrey"></div>`,
+				
+	"bkI" : `	
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:tan"></div>
+				<div class="inner" style="background-color:tan"></div>
+				<div class="inner" style="background-color:tan"></div>
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:dimgrey"></div>`,
+				
+	"bkX" : `	
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:tan"></div>
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:tan"></div>
+				<div class="inner" style="background-color:tan"></div>
+				<div class="inner" style="background-color:tan"></div>
+				<div class="inner" style="background-color:dimgrey"></div>
+				<div class="inner" style="background-color:tan"></div>
+				<div class="inner" style="background-color:dimgrey"></div>`
   };
 
   // Pass our data to the template
@@ -338,7 +395,18 @@ var rotate = function(ele, deg){
 	}
 	// console.log(parent.style.transform);
 	// console.log(degree, deg, parseInt(degree + deg));
-	$(parent).css("transform", `rotate(${parseInt(degree + deg)}deg)`);
+	
+	// $(parent).css("transform", `rotate(${parseInt(degree + deg)}deg)`);
+	
+	    $({degs: degree}).animate({degs: degree+deg}, {
+        duration: 750,
+        step: function(now){
+            $(parent).css({
+                 transform: "rotate(" + now + "deg)"
+            });
+        }
+    });
+	
 };
 });
 </script>
@@ -359,7 +427,7 @@ var rotate = function(ele, deg){
 		<tr class="row row-top">
 			<td class="column column-left"></td>
 			<td class="column column1"></td>
-			<td class="column column2"></td>
+			<td class="column column2 colDown">&#8659;</td>
 			<td class="column column3"></td>
 			<td class="column column4"></td>
 			<td class="column column5"></td>
@@ -371,15 +439,15 @@ var rotate = function(ele, deg){
 		</tr>
 		<tr class="row row1">
 			<td class="column column-left"></td>
-			<td class="column column1"></td>
+			<td class="column column1" style="transform: rotate(90deg)">{{{bkL}}}</td>
 			<td class="column column2"></td>
-			<td class="column column3"></td>
+			<td class="column column3">{{{bkI}}}</td>
 			<td class="column column4"></td>
-			<td class="column column5"></td>
+			<td class="column column5">{{{bkT}}}</td>
 			<td class="column column6"></td>
-			<td class="column column7"></td>
+			<td class="column column7">{{{bkI}}}</td>
 			<td class="column column8"></td>
-			<td class="column column9"></td>
+			<td class="column column9" style="transform: rotate(180deg)" >{{{bkL}}}</td>
 			<td class="column column-right"></td>
 		</tr>
 		<tr class="row row2">
@@ -397,15 +465,15 @@ var rotate = function(ele, deg){
 		</tr>
 		<tr class="row row3">
 			<td class="column column-left"></td>
-			<td class="column column1"></td>
+			<td class="column column1" style="transform: rotate(90deg)" >{{{bkI}}}</td>
 			<td class="column column2"></td>
-			<td class="column column3"></td>
+			<td class="column column3" style="transform: rotate(90deg)" >{{{bkL}}}</td>
 			<td class="column column4"></td>
-			<td class="column column5"></td>
+			<td class="column column5">{{{bkT}}}</td>
 			<td class="column column6"></td>
-			<td class="column column7"></td>
+			<td class="column column7" style="transform: rotate(180deg)" >{{{bkL}}}</td>
 			<td class="column column8"></td>
-			<td class="column column9"></td>
+			<td class="column column9" style="transform: rotate(90deg)" >{{{bkI}}}</td>
 			<td class="column column-right"></td>
 		</tr>
 		<tr class="row row4">
@@ -423,15 +491,15 @@ var rotate = function(ele, deg){
 		</tr>
 		<tr class="row row5">
 			<td class="column column-left"></td>
-			<td class="column column1"></td>
+			<td class="column column1" style="transform: rotate(-90deg)">{{{bkT}}}</td>
 			<td class="column column2"></td>
-			<td class="column column3"></td>
+			<td class="column column3" style="transform: rotate(-90deg)">{{{bkT}}}</td>
 			<td class="column column4"></td>
-			<td class="column column5"></td>
+			<td class="column column5">{{{bkX}}}</td>
 			<td class="column column6"></td>
-			<td class="column column7"></td>
+			<td class="column column7" style="transform: rotate(90deg)">{{{bkT}}}</td>
 			<td class="column column8"></td>
-			<td class="column column9"></td>
+			<td class="column column9" style="transform: rotate(90deg)">{{{bkT}}}</td>
 			<td class="column column-right"></td>
 		</tr>
 		<tr class="row row6">
@@ -449,15 +517,15 @@ var rotate = function(ele, deg){
 		</tr>
 		<tr class="row row7">
 			<td class="column column-left"></td>
-			<td class="column column1"></td>
+			<td class="column column1" style="transform: rotate(90deg)">{{{bkI}}}</td>
 			<td class="column column2"></td>
-			<td class="column column3"></td>
+			<td class="column column3">{{{bkL}}}</td>
 			<td class="column column4"></td>
-			<td class="column column5"></td>
+			<td class="column column5" style="transform: rotate(180deg)">{{{bkT}}}</td>
 			<td class="column column6"></td>
-			<td class="column column7"></td>
+			<td class="column column7" style="transform: rotate(-90deg)">{{{bkL}}}</td>
 			<td class="column column8"></td>
-			<td class="column column9"></td>
+			<td class="column column9" style="transform: rotate(90deg)">{{{bkI}}}</td>
 			<td class="column column-right"></td>
 		</tr>
 		<tr class="row row8">
@@ -475,15 +543,15 @@ var rotate = function(ele, deg){
 		</tr>
 		<tr class="row row9">
 			<td class="column column-left"></td>
-			<td class="column column1"></td>
+			<td class="column column1">{{{bkL}}}</td>
 			<td class="column column2"></td>
-			<td class="column column3"></td>
+			<td class="column column3">{{{bkI}}}</td>
 			<td class="column column4"></td>
-			<td class="column column5"></td>
+			<td class="column column5" style="transform: rotate(180deg)">{{{bkT}}}</td>
 			<td class="column column6"></td>
-			<td class="column column7"></td>
+			<td class="column column7">{{{bkI}}}</td>
 			<td class="column column8"></td>
-			<td class="column column9"></td>
+			<td class="column column9" style="transform: rotate(-90deg)">{{{bkL}}}</td>
 			<td class="column column-right"></td>
 		</tr>
 		<tr class="row row-bottom">
