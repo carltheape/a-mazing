@@ -72,13 +72,6 @@ $('.sidebar-button').click(function (e) {
 		}
 	
 })
-
-
-$('.pushDown').click(function (e) {
-	e.preventDefault();
-	console.log("click");
-	
-})
 	
 	
 	
@@ -188,7 +181,8 @@ $(function(){
 });
 
 
-let tileL = `	<button class='rotate cw'>&#10227;</button>
+let tileL = `	<div class='tile'>
+				<button class='rotate cw'>&#10227;</button>
 				<button class='rotate ccw'>&#10226;</button>
 				<div class="inner" style="background-color:grey"></div>
 				<div class="inner" style="background-color:tan"></div>
@@ -198,9 +192,11 @@ let tileL = `	<button class='rotate cw'>&#10227;</button>
 				<div class="inner" style="background-color:tan"></div>
 				<div class="inner" style="background-color:grey"></div>
 				<div class="inner" style="background-color:grey"></div>
-				<div class="inner" style="background-color:grey"></div>`;
+				<div class="inner" style="background-color:grey"></div>
+				</div>`;
 				
-let tileT = `	<button class='rotate cw'>&#10227;</button>
+let tileT = `	<div class='tile'>
+				<button class='rotate cw'>&#10227;</button>
 				<button class='rotate ccw'>&#10226;</button>
 				<div class="inner" style="background-color:grey"></div>
 				<div class="inner" style="background-color:grey"></div>
@@ -210,9 +206,11 @@ let tileT = `	<button class='rotate cw'>&#10227;</button>
 				<div class="inner" style="background-color:tan"></div>
 				<div class="inner" style="background-color:grey"></div>
 				<div class="inner" style="background-color:tan"></div>
-				<div class="inner" style="background-color:grey"></div>`;
+				<div class="inner" style="background-color:grey"></div>
+				</div>`;
 				
-let tileI = `	<button class='rotate cw'>&#10227;</button>
+let tileI = `	<div class='tile'>
+				<button class='rotate cw'>&#10227;</button>
 				<button class='rotate ccw'>&#10226;</button>
 				<div class="inner" style="background-color:grey"></div>
 				<div class="inner" style="background-color:grey"></div>
@@ -222,9 +220,11 @@ let tileI = `	<button class='rotate cw'>&#10227;</button>
 				<div class="inner" style="background-color:tan"></div>
 				<div class="inner" style="background-color:grey"></div>
 				<div class="inner" style="background-color:grey"></div>
-				<div class="inner" style="background-color:grey"></div>`;
+				<div class="inner" style="background-color:grey"></div>
+				</div>`;
 				
-let tileX = `	<button class='rotate cw'>&#10227;</button>
+let tileX = `	<div class='tile'>
+				<button class='rotate cw'>&#10227;</button>
 				<button class='rotate ccw'>&#10226;</button>
 				<div class="inner" style="background-color:grey"></div>
 				<div class="inner" style="background-color:tan"></div>
@@ -234,7 +234,8 @@ let tileX = `	<button class='rotate cw'>&#10227;</button>
 				<div class="inner" style="background-color:tan"></div>
 				<div class="inner" style="background-color:grey"></div>
 				<div class="inner" style="background-color:tan"></div>
-				<div class="inner" style="background-color:grey"></div>`;
+				<div class="inner" style="background-color:grey"></div>
+				</div>`;
 
 let tileBag = [];
 let degArray = [0, 90, 180, 270];
@@ -243,15 +244,19 @@ for (var i = 0; i < 100; i++) {
 	// console.log(i);
 	if (i < 30) {
 		tileBag.push(tileI);
+		// console.log(i, 'I', tileBag)
 	}
 	else if (i >= 30 && i < 55) {
 		tileBag.push(tileL);
+		// console.log(i, 'L', tileBag)
 	}
 	else if (i >= 55 && i < 85) {
 		tileBag.push(tileT);
+		// console.log(i, 'T', tileBag)
 	}
 	else {
-		tileBag.push(tileX)
+		tileBag.push(tileX);
+		// console.log(i, 'X', tileBag)
 	}
 };
 // var rand = tileBag[Math.floor(Math.random() * tileBag.length)];
@@ -260,32 +265,92 @@ for (var i = 0; i < 100; i++) {
 // console.log(tileBag[0]);
 for (var i = 1; i < 10; i++) {
 	for (var j = 1; j < 10; j++) {
-		let randoTile = tileBag[Math.floor(Math.random() * tileBag.length)];
-		let randoDeg = degArray[Math.floor(Math.random() * degArray.length)];
-		tileBag.splice(randoTile, 1);
+		let randoTile = Math.floor(Math.random() * tileBag.length);
+		// console.log(randoTile);
 		
 		if (!$(`.row${i} > .column${j}`).html()) {
-			$(`.row${i} > .column${j}`).html(randoTile);
-			$(`.row${i} > .column${j}`).css({'transform' : 'rotate('+ parseInt(randoDeg) +'deg)'});
+			$(`.row${i} > .column${j}`).html(tileBag[randoTile]);
+			tileBag.splice(tileBag[randoTile], 1);
+			// $(`.row${i} > .column${j}`)
+			// console.log($(`.row${i} > .column${j}`).children()[0])
 		}
 		
 	}
 }
+		$(`.tile`).each(function( index ) {
+			let randoDeg = degArray[Math.floor(Math.random() * degArray.length)];
+			$( this ).css({'transform' : 'rotate('+ parseInt(randoDeg) +'deg)'});
+		});
+
 // $(".row1 > .column1").html(tileL);
 
 $('.cw').click(function () {
-	rotate($(this), 90)
+	rotate($(this), 90);
 })
 
 $('.ccw').click(function () {
 	rotate($(this), -90)
 })
 
+$('.pushDown').click(function (index) {
+	for (var q = 0; q < 9; q+=2) {
+		if ($(this).hasClass(`column${q}`)) {
+			if ($(`.row9 > .column${q}`).html()) {
+				tileBag.push($(`.row9 > .column${q}`).html());
+			}
+			$(`.row9 > .column${q}`).html("");
+			console.log(tileBag.length);
+			
+			for (var i = 10; i > 0; i--) {
+				$(`.row${i+1} > .column${q}`).append($(`.column${q}`)[i].children[0])
+			}
+		}	
+	}
+});
+
+$('.pushUp').click(function (index) {
+	for (var q = 0; q < 9; q+=2) {
+		if ($(this).hasClass(`column${q}`)) {
+			
+			if ($(`.row1 > .column${q}`).html()) {
+				tileBag.push($(`.row9 > .column${q}`).html());
+			}
+			$(`.row1 > .column${q}`).html("");
+			console.log(tileBag.length);
+			
+			
+			for (var i = 1; i < 10; i++) {
+				$(`.row${i-1} > .column${q}`).append($(`.column${q}`)[i].children[0])
+			}
+		}	
+	}
+});
+
+$('.pushRight').click(function (index) {
+	for (var q = 0; q < 9; q+=2) {
+		if ($(this).parent().hasClass(`row${q}`)) {
+			for (var i = 10; i > 0; i--) {
+				$(`.row${q} > .column${i+1}`).append($(`.row${q}`).children()[i].children[0])
+			}
+		}
+	}
+});
+
+$('.pushLeft').click(function (index) {
+	for (var q = 0; q < 9; q+=2) {
+		if ($(this).parent().hasClass(`row${q}`)) {
+			for (var i = 1; i < 10; i++) {
+				$(`.row${q} > .column${i-1}`).append($(`.row${q}`).children()[i].children[0])
+			}
+		}
+	}
+});
+
 
     
 var rotate = function(ele, deg){
 	let degree;
-	let parent = ele.closest( "td" )[0];
+	let parent = ele.closest( "div" )[0];
 	// console.log(parent.style.transform);
 	// console.log(ele.closest( "td" ));
 	if (parent.style.transform == "" || parent.style.transform === 'rotate(0deg)') {
@@ -319,5 +384,5 @@ var rotate = function(ele, deg){
     });
 	
 };
-console.log(tileBag)
+// console.log(tileBag)
 });

@@ -86,11 +86,12 @@
 	
 	.sidebar{
 		position: fixed;
-		height: 40vh;
+		height: 450px;
 		width: 250px;
-		background-color: red;
+		background-color: lightgrey;
 		z-index: 2;
 		transition: margin-left 1s;
+		border-radius: 0 10% 10% 0;
 		
 	}
 	
@@ -100,12 +101,18 @@
 		top: 50%;
 		transform: translateY(-50%);
 		font-size: 30px;
-		background-color: red;
+		background-color: lightgrey;
 		border-radius: 20%;
-		border: solid 5px red;
+		border: solid 5px lightgrey;
 		padding: 5px;
 		transition: opacity 1s;
+		cursor: pointer;
 		
+	}
+	
+	.sidebar-button:hover{
+		background-color: darkgrey;
+		border: solid 5px darkgrey;
 	}
 	
 	.hide-left{
@@ -114,4 +121,9 @@
 	
 	.transparent{
 		opacity: 0.4;
+	}
+	
+	.tile{
+		height: 100%;
+		width: 100%;
 	}
